@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Patch, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Patch,
+  Delete,
+  Param,
+  Body,
+  HttpCode,
+} from '@nestjs/common';
+import { CreateUserDto } from './dtos/create-user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -7,21 +17,25 @@ export class UsersController {
     return ['Ahmed', 'omar', 'farida'];
   }
 
-  @Get()
-  findOne(): string {
-    return 'one user';
+  @Get(':id')
+  findOne(@Param('id') id: any): string {
+    return id;
   }
 
   @Post()
-  create(): string {
-    return 'creating user';
+  @HttpCode(201)
+  create(@Body() createUserDto: CreateUserDto) {
+    return createUserDto;
   }
-  @Patch()
-  update(): string {
-    return 'update user';
+
+  @Patch(':id')
+  update(@Param('id') id: any, @Body() input: string): string {
+    return input;
   }
-  @Delete()
-  remove(): string {
-    return 'delete user';
+
+  @Delete(':id')
+  @HttpCode(204)
+  remove(@Param('id') id: any): string {
+    return id;
   }
 }
