@@ -11,6 +11,7 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserEntity } from './user.entity';
+import { v4 as uuid } from 'uuid';
 
 @Controller('users')
 export class UsersController {
@@ -28,11 +29,16 @@ export class UsersController {
   @Post()
   @HttpCode(201)
   create(@Body() createUserDto: CreateUserDto) {
-    return createUserDto;
+    const newUser: UserEntity = {
+      ...createUserDto,
+      id: uuid(),
+    };
+    this.users.push(newUser);
+    return newUser;
   }
 
   @Patch(':id')
-  update(@Param('id') id: any, @Body() updateUserDto: UpdateUserDto) {
+  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return updateUserDto;
   }
 
