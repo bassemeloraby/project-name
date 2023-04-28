@@ -9,17 +9,20 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { UpdateUserDto } from './dtos/update-user.dto';
+import { UserEntity } from './user.entity';
 
 @Controller('users')
 export class UsersController {
+  private readonly users: UserEntity[] = [];
   @Get()
-  find(): string[] {
-    return ['Ahmed', 'omar', 'farida'];
+  find(): UserEntity[] {
+    return this.users;
   }
 
   @Get(':id')
-  findOne(@Param('id') id: any): string {
-    return id;
+  findOne(@Param('id') id: string): UserEntity {
+    return this.users.find((user) => user.id === id);
   }
 
   @Post()
@@ -29,8 +32,8 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: any, @Body() input: string): string {
-    return input;
+  update(@Param('id') id: any, @Body() updateUserDto: UpdateUserDto) {
+    return updateUserDto;
   }
 
   @Delete(':id')
